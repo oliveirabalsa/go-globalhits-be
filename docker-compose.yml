@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.8
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: globalhitss
+      RABBITMQ_DEFAULT_PASS: globalhitss
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: globalhitss
+      POSTGRES_PASSWORD: globalhitss
+      POSTGRES_DB: globalhitss
