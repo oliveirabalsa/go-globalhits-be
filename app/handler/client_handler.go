@@ -43,3 +43,14 @@ func (h *ClientHandler) CreateClient(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(client)
 }
+
+func (h *ClientHandler) GetClients(w http.ResponseWriter, r *http.Request) {
+	clients, err := h.ClientUsecase.GetClients()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(clients)
+}
