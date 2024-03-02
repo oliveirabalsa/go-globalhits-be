@@ -18,12 +18,10 @@ func main() {
 
 	clientRepo := repository.NewClientRepository(db)
 
-	clientUsecase := usecase.NewClientUseCase(*clientRepo)
+	clientUsecase := usecase.NewClientUseCase(*clientRepo, ch, "globalhitss")
 
 	clientHandler := handler.ClientHandler{
 		ClientUsecase: *clientUsecase,
-		QueueChannel:  ch,
-		QueueName:     "globalhitss",
 	}
 
 	r := chi.NewRouter()

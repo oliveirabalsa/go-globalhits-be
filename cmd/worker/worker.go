@@ -6,7 +6,6 @@ import (
 
 	"github.com/oliveirabalsa/go-globalhitss-be/app/model"
 	"github.com/oliveirabalsa/go-globalhitss-be/app/repository"
-	"github.com/oliveirabalsa/go-globalhitss-be/app/usecase"
 	"github.com/oliveirabalsa/go-globalhitss-be/config"
 	"github.com/oliveirabalsa/go-globalhitss-be/queue"
 )
@@ -32,8 +31,6 @@ func main() {
 
 	clientRepo := repository.NewClientRepository(db)
 
-	clientUsecase := usecase.NewClientUseCase(*clientRepo)
-
 	forever := make(chan bool)
 
 	go func() {
@@ -55,7 +52,7 @@ func main() {
 					continue
 				}
 
-				_, err = clientUsecase.CreateClient(&client)
+				_, err = clientRepo.Create(&client)
 				if err != nil {
 					log.Printf("Failed to create client: %v", err)
 					continue
