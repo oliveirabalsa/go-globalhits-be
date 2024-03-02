@@ -8,48 +8,34 @@ import (
 	"github.com/oliveirabalsa/go-globalhitss-be/app/handler"
 	"github.com/oliveirabalsa/go-globalhitss-be/app/repository"
 	"github.com/oliveirabalsa/go-globalhitss-be/app/usecase"
-	"github.com/oliveirabalsa/go-globalhitss-be/db"
-	"github.com/oliveirabalsa/go-globalhitss-be/queue"
+	"github.com/oliveirabalsa/go-globalhitss-be/config"
 )
 
 func main() {
-	// Initialize database
-	db, err := db.NewPostgresDB()
-	if err != nil {
-		log.Fatalf("failed to connect to database: %v", err)
-	}
-
-	// Initialize RabbitMQ
-	conn, ch, err := queue.NewRabbitMQ()
-	if err != nil {
-		log.Fatalf("failed to connect to RabbitMQ: %v", err)
-	}
+	ch, conn, db := config.InitServices()
 	defer conn.Close()
 	defer ch.Close()
 
-	// Initialize repository
-	clientRepo := repository.ClientRepository{DB: db}
+	clientRepo := repository.NewClientRepository(db)
 
-	// Initialize usecase
-	clientUsecase := usecase.ClientUsecase{ClientRepo: clientRepo}
+	clientUsecase := usecase.NewClientUseCase(*clientRepo)
 
-	// Initialize handler
 	clientHandler := handler.ClientHandler{
-		ClientUsecase: clientUsecase,
+		ClientUsecase: *clientUsecase,
 		QueueChannel:  ch,
 		QueueName:     "globalhitss",
 	}
 
-	// Initialize router
 	r := chi.NewRouter()
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Hello, world!"))
 	})
 	r.Post("/clients", clientHandler.CreateClient)
+	r.Get("/clients", clientHandler.GetClients)
 	// Add other routes as needed
 
-	log.Println("Starting server on :8080...")
-	if err := http.ListenAndServe(":8080", r); err != nil {
+	log.Println("Starting server on :8082...")
+	if err := http.ListenAndServe(":8082", r); err != nil {
 		log.Fatalf("could not start server: %v", err)
 	}
 }
