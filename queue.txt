@@ -1,1 +1,0 @@
-curl -X PUT http://localhost:15672/api/queues/%2F/globalhitss -u globalhitss:globalhitss -H "Content-Type: application/json" -d '{"auto_delete":false,"durable":true,"arguments":{}}'
