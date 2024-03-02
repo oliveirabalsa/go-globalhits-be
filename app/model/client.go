@@ -11,3 +11,7 @@ type Client struct {
 	DateOfBirth string    `json:"date_of_birth"`
 	CPF         string    `json:"cpf"`
 }
+
+func (Client) TableName() string {
+	return "clients"
+}
