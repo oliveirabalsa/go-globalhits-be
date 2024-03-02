@@ -1,6 +1,7 @@
 package db
 
 import (
+	"github.com/oliveirabalsa/go-globalhitss-be/app/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -11,5 +12,6 @@ func NewPostgresDB() (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
+	db.AutoMigrate(&model.Client{})
 	return db, nil
 }
