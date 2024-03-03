@@ -13,14 +13,14 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"Fulano\",\n    \"last_name\": \"da Silva\",\n    \"address\": \"Rua x, bairro da rua, cidade/estado\",\n    \"contact\": \"fulano.dasilva@example.com\",\n    \"cpf\": \"123.456.789-00\",\n    \"date_of_birth\": \"12/12/1912\"\n}",
+					"raw": "{\n    \"name\": \"Leonardo\",\n    \"last_name\": \"da Silva\",\n    \"address\": \"Rua x, bairro da rua, cidade/estado\",\n    \"contact\": \"fulano.dasilva@example.com\",\n    \"cpf\": \"123.456.789-00\",\n    \"date_of_birth\": \"12/12/1912\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": "localhost:8082/clients"
+				"url": "localhost:8082/api/v1/clients"
 			},
 			"response": []
 		},
@@ -38,7 +38,7 @@
 						}
 					}
 				},
-				"url": "localhost:8082/clients/323e3f17-9294-4918-b253-fbb2eed34e65"
+				"url": "localhost:8082/api/v1/clients/95025f00-fa81-45b0-b4b6-fb6832146314"
 			},
 			"response": []
 		},
@@ -47,7 +47,7 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"url": "localhost:8082/clients/4559c85a-5088-42c3-9d86-cbfb6a5a1500"
+				"url": "localhost:8082/api/v1/clients/95025f00-fa81-45b0-b4b6-fb6832146314"
 			},
 			"response": []
 		},
@@ -56,7 +56,24 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "localhost:8082/clients"
+				"url": {
+					"raw": "localhost:8082/api/v1/clients?page=10",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"clients"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "10"
+						}
+					]
+				}
 			},
 			"response": []
 		},
@@ -65,7 +82,7 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": "localhost:8082/clients/87c292ff-4f93-42d6-bc78-53103d20a84c"
+				"url": "localhost:8082/api/v1/clients/95025f00-fa81-45b0-b4b6-fb6832146314"
 			},
 			"response": []
 		}
