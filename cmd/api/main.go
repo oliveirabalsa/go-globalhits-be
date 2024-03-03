@@ -20,6 +20,8 @@ func main() {
 		log.Fatalf("error loading .env file: %v", err)
 	}
 
+	port := os.Getenv("PORT")
+
 	ch, conn, db := config.InitServices()
 	defer conn.Close()
 	defer ch.Close()
@@ -34,14 +36,16 @@ func main() {
 		w.Write([]byte("OK"))
 	})
 
-	r.Post("/clients", clientHandler.CreateClient)
-	r.Get("/clients", clientHandler.GetClients)
-	r.Get("/clients/{id}", clientHandler.GetClientByID)
-	r.Patch("/clients/{id}", clientHandler.UpdateClient)
-	r.Delete("/clients/{id}", clientHandler.DeleteClient)
+	r.Route("/api/v1", func(r chi.Router) {
+		r.Post("/clients", clientHandler.CreateClient)
+		r.Get("/clients", clientHandler.GetClients)
+		r.Get("/clients/{id}", clientHandler.GetClientByID)
+		r.Patch("/clients/{id}", clientHandler.UpdateClient)
+		r.Delete("/clients/{id}", clientHandler.DeleteClient)
+	})
 
-	log.Println("Starting server on :8082...")
-	if err := http.ListenAndServe(":8082", r); err != nil {
+	log.Println("Starting server on :" + port)
+	if err := http.ListenAndServe(":"+port, r); err != nil {
 		log.Fatalf("could not start server: %v", err)
 	}
 }

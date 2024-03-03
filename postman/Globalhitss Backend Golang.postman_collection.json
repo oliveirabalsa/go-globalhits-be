@@ -1,0 +1,73 @@
+{
+	"info": {
+		"_postman_id": "74b32e58-020b-4f63-8ce9-f438e9cb0b4e",
+		"name": "Globalhitss Backend Golang",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "10018521"
+	},
+	"item": [
+		{
+			"name": "Create Client",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Fulano\",\n    \"last_name\": \"da Silva\",\n    \"address\": \"Rua x, bairro da rua, cidade/estado\",\n    \"contact\": \"fulano.dasilva@example.com\",\n    \"cpf\": \"123.456.789-00\",\n    \"date_of_birth\": \"12/12/1912\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8082/clients"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Client",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Beltrano\",\n  \"last_name\": \"Pereira\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8082/clients/323e3f17-9294-4918-b253-fbb2eed34e65"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Client",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "localhost:8082/clients/4559c85a-5088-42c3-9d86-cbfb6a5a1500"
+			},
+			"response": []
+		},
+		{
+			"name": "Get all clients",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:8082/clients"
+			},
+			"response": []
+		},
+		{
+			"name": "Get client by Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:8082/clients/87c292ff-4f93-42d6-bc78-53103d20a84c"
+			},
+			"response": []
+		}
+	]
+}

@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/clients": {
+        "/api/v1/clients": {
             "get": {
                 "description": "Get a list of clients from the database",
                 "consumes": [
@@ -34,7 +34,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/github_com_oliveirabalsa_go-globalhitss-be_app_model.Client"
+                                "$ref": "#/definitions/github_com_oliveirabalsa_go-globalhitss-be_app_dto.PaginationResponse"
                             }
                         }
                     }
@@ -79,7 +79,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/clients/{id}": {
+        "/api/v1/clients/{id}": {
             "get": {
                 "description": "Get a single client by ID from the database",
                 "consumes": [
@@ -206,6 +206,26 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "github_com_oliveirabalsa_go-globalhitss-be_app_dto.PaginationResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_oliveirabalsa_go-globalhitss-be_app_model.Client"
+                    }
+                },
+                "next_page": {
+                    "type": "integer"
+                },
+                "page": {
+                    "type": "integer"
+                },
+                "total_pages": {
+                    "type": "integer"
+                }
+            }
+        },
         "github_com_oliveirabalsa_go-globalhitss-be_app_model.Client": {
             "type": "object",
             "required": [

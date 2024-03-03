@@ -11,6 +11,7 @@ require (
 )
 
 require (
+	github.com/rakyll/hey v0.1.4 // indirect
 	github.com/swaggo/files/v2 v2.0.0 // indirect
 	github.com/swaggo/http-swagger/v2 v2.0.2 // indirect
 )
