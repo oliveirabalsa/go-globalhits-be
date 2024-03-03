@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"encoding/json"
+	"os"
 
 	"github.com/google/uuid"
 	"github.com/oliveirabalsa/go-globalhitss-be/app/model"
@@ -32,7 +33,7 @@ func (uc *ClientUsecase) CreateClient(client *model.Client) (string, error) {
 	}
 
 	message := &queue.Message{
-		Action: "create_client",
+		Action: os.Getenv("CREATE_CLIENT_ACTION"),
 		Data:   clientData,
 	}
 
@@ -52,7 +53,7 @@ func (uc *ClientUsecase) UpdateClient(clientId uuid.UUID, client *model.Client) 
 	}
 
 	message := &queue.Message{
-		Action: "update_client",
+		Action: os.Getenv("UPDATE_CLIENT_ACTION"),
 		Data:   clientData,
 	}
 	err = queue.PublishMessage(uc.QueueChannel, uc.QueueName, message)
@@ -87,7 +88,7 @@ func (uc *ClientUsecase) GetClientByID(clientId uuid.UUID) (*model.Client, error
 
 func (uc *ClientUsecase) DeleteClient(clientId uuid.UUID) (string, error) {
 	message := &queue.Message{
-		Action: "delete_client",
+		Action: os.Getenv("DELETE_CLIENT_ACTION"),
 		Data:   []byte(clientId.String()),
 	}
 	if err := queue.PublishMessage(uc.QueueChannel, uc.QueueName, message); err != nil {

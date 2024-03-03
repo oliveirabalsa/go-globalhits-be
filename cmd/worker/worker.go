@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"os"
 
 	"github.com/joho/godotenv"
 	"github.com/oliveirabalsa/go-globalhitss-be/app/handler"
@@ -38,11 +39,11 @@ func main() {
 				continue
 			}
 			switch message.Action {
-			case "create_client":
+			case os.Getenv("CREATE_CLIENT_ACTION"):
 				handler.CreateClientHandler(clientRepo, message)
-			case "update_client":
+			case os.Getenv("UPDATE_CLIENT_ACTION"):
 				handler.UpdateClientHandler(clientRepo, message)
-			case "delete_client":
+			case os.Getenv("DELETE_CLIENT_ACTION"):
 				handler.DeleteClientHandler(clientRepo, message)
 			}
 		}
