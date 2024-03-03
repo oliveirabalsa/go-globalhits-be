@@ -7,14 +7,14 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: globalhitss
-      RABBITMQ_DEFAULT_PASS: globalhitss
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
 
   postgres:
     image: postgres:latest
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: globalhitss
-      POSTGRES_PASSWORD: globalhitss
-      POSTGRES_DB: globalhitss
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
