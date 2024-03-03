@@ -2,7 +2,9 @@ package queue
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
+	"os"
 
 	"github.com/streadway/amqp"
 )
@@ -13,7 +15,13 @@ type Message struct {
 }
 
 func NewRabbitMQ() (*amqp.Connection, *amqp.Channel, error) {
-	conn, err := amqp.Dial("amqp://globalhitss:globalhitss@localhost:5672/")
+	url := fmt.Sprintf("amqp://%s:%s@%s:%s/",
+		os.Getenv("RABBITMQ_USER"),
+		os.Getenv("RABBITMQ_PASSWORD"),
+		os.Getenv("RABBITMQ_HOST"),
+		os.Getenv("RABBITMQ_PORT"),
+	)
+	conn, err := amqp.Dial(url)
 	if err != nil {
 		return nil, nil, err
 	}
