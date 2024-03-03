@@ -247,9 +247,6 @@ const docTemplate = `{
                     "type": "string",
                     "example": "123.456.789-00"
                 },
-                "createdAt": {
-                    "type": "string"
-                },
                 "date_of_birth": {
                     "type": "string",
                     "example": "12/12/1912"
@@ -261,9 +258,6 @@ const docTemplate = `{
                 "name": {
                     "type": "string",
                     "example": "Fulano"
-                },
-                "updatedAt": {
-                    "type": "string"
                 }
             }
         }

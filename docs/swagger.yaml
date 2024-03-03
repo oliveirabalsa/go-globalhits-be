@@ -23,8 +23,6 @@ definitions:
       cpf:
         example: 123.456.789-00
         type: string
-      createdAt:
-        type: string
       date_of_birth:
         example: 12/12/1912
         type: string
@@ -33,8 +31,6 @@ definitions:
         type: string
       name:
         example: Fulano
-        type: string
-      updatedAt:
         type: string
     required:
     - cpf
