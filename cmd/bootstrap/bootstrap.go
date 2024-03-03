@@ -2,24 +2,20 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	err := loadEnv()
-	if err != nil {
-		fmt.Println("Failed to load environment variables:", err)
-		return
-	}
-
+	loadEnv()
 	createQueue()
-
 	startAPIService()
-
 	startWorkerService()
 	signalCh := make(chan os.Signal, 1)
 	signal.Notify(signalCh, os.Interrupt, syscall.SIGTERM)
@@ -30,11 +26,10 @@ func main() {
 	os.Exit(0)
 }
 
-func loadEnv() error {
-	cmd := exec.Command("bash", "-c", "set -a && . ./.env && set +a")
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	return cmd.Run()
+func loadEnv() {
+	if err := godotenv.Load(); err != nil {
+		log.Fatalf("error loading .env file: %v", err)
+	}
 }
 
 func createQueue() {
