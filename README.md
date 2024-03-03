@@ -7,9 +7,15 @@ Este é o back-end do challenge da GlobalHitss, desenvolvida em Go, utilizando o
 ### 🚀 Como Iniciar
 
 #### Pré-requisitos
-Certifique-se de ter o Go instalado em sua máquina
+Certifique-se de ter o Go versão 1.21.6 ou maior instalado em sua máquina
 
-1. Renomeie ou copie o arquivo `env.example` para `.env` e preencha as variáveis de ambiente necessárias:
+1. Execute o commando para instalar os pacotes:
+
+   ```bash
+   go mod tidy
+   ```
+
+2. Renomeie ou copie o arquivo `env.example` para `.env` e preencha as variáveis de ambiente necessárias:
 
    ```plaintext
    PORT=8082 
@@ -27,7 +33,7 @@ Certifique-se de ter o Go instalado em sua máquina
    RABBITMQ_API_PORT=15672
    RABBITMQ_QUEUE=globalhitss
    ```
-2. Execute o serviço docker:   
+3. Execute o serviço docker:   
    
 ```bash
 docker-compose up -d
@@ -35,7 +41,7 @@ docker-compose up -d
 
 Isso iniciará os serviços do RabbitMQ e do PostgreSQL em contêineres Docker, conforme configurado no arquivo `docker-compose.yml`.
 
-3. Execute o script `start.sh` para iniciar o worker, criar a fila e iniciar a aplicação:
+4. Execute o comando `bootstrap` para iniciar o worker, criar a fila e iniciar a aplicação:
 
    ```bash
    go run cmd/bootstrap/bootstrap.go
