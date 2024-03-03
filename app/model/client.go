@@ -19,8 +19,8 @@ type Client struct {
 	DateOfBirth string    `json:"date_of_birth" validate:"required,date_of_birth" example:"12/12/1912"`
 	CPF         string    `json:"cpf" validate:"required,cpf" example:"123.456.789-00"`
 	Active      bool      `gorm:"default:true" json:"active" swaggerignore:"true"`
-	CreatedAt   time.Time `gorm:"created_at" json:"createdAt"`
-	UpdatedAt   time.Time `gorm:"updated_at" json:"updatedAt"`
+	CreatedAt   time.Time `gorm:"created_at" json:"createdAt" swaggerignore:"true"`
+	UpdatedAt   time.Time `gorm:"updated_at" json:"updatedAt" swaggerignore:"true" `
 }
 
 func (Client) TableName() string {
