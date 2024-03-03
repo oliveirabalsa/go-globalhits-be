@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 
+	"github.com/joho/godotenv"
 	"github.com/oliveirabalsa/go-globalhitss-be/app/handler"
 	"github.com/oliveirabalsa/go-globalhitss-be/app/repository"
 	"github.com/oliveirabalsa/go-globalhitss-be/config"
@@ -11,6 +12,10 @@ import (
 )
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Fatalf("error loading .env file: %v", err)
+	}
+
 	ch, conn, db := config.InitServices()
 	defer conn.Close()
 	defer ch.Close()
