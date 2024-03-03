@@ -2,6 +2,7 @@ package config
 
 import (
 	"log"
+	"os"
 
 	"github.com/oliveirabalsa/go-globalhitss-be/db"
 	"github.com/oliveirabalsa/go-globalhitss-be/queue"
@@ -10,7 +11,7 @@ import (
 )
 
 func SetupConsumer(ch *amqp.Channel) (<-chan amqp.Delivery, error) {
-	queueName := "globalhitss"
+	queueName := os.Getenv("RABBITMQ_QUEUE")
 	msgs, err := ch.Consume(
 		queueName,
 		"",
@@ -33,8 +34,6 @@ func InitServices() (*amqp.Channel, *amqp.Connection, *gorm.DB) {
 	if err != nil {
 		log.Fatalf("failed to connect to database: %v", err)
 	}
-
-	// Initialize RabbitMQ
 	conn, ch, err := queue.NewRabbitMQ()
 	if err != nil {
 		log.Fatalf("failed to connect to RabbitMQ: %v", err)
