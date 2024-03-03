@@ -116,10 +116,15 @@ func (h *ClientHandler) GetClients(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	nextPage := page + 1
+	if nextPage > totalPages {
+		nextPage = 0
+	}
+
 	response := dto.PaginationResponse{
 		Data:       clients,
 		Page:       page,
-		NextPage:   page + 1,
+		NextPage:   nextPage,
 		TotalPages: totalPages,
 	}
 
