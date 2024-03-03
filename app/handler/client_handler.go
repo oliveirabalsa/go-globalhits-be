@@ -14,6 +14,15 @@ type ClientHandler struct {
 	ClientUsecase usecase.ClientUsecase
 }
 
+// @Summary Create a new client
+// @Description Creates a new client with the provided data
+// @Tags clients
+// @Accept json
+// @Produce json
+// @Param client body model.Client true "Client object to be created"
+// @Success 200 {string} string "Your data has been received and is being processed."
+// @Failure 400 {string} string "Bad Request"
+// @Router /clients [post]
 func (h *ClientHandler) CreateClient(w http.ResponseWriter, r *http.Request) {
 	var client model.Client
 	err := json.NewDecoder(r.Body).Decode(&client)
@@ -40,6 +49,16 @@ func (h *ClientHandler) CreateClient(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(message)
 }
 
+// @Summary Update an existing client
+// @Description Updates an existing client with the provided data
+// @Tags clients
+// @Accept json
+// @Produce json
+// @Param id path string true "Client ID"
+// @Param client body model.Client true "Client object to be updated"
+// @Success 200 {string} string "Your data has been received and is being processed."
+// @Failure 400 {string} string "Bad Request"
+// @Router /clients/{id} [patch]
 func (h *ClientHandler) UpdateClient(w http.ResponseWriter, r *http.Request) {
 	var client model.Client
 
@@ -86,6 +105,43 @@ func (h *ClientHandler) GetClients(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(clients)
 }
 
+// @Summary Get a client by ID
+// @Description Get a single client by ID from the database
+// @Tags clients
+// @Accept json
+// @Produce json
+// @Param id path string true "Client ID"
+// @Success 200 {object} model.Client
+// @Failure 404 {string} string "Client not found"
+// @Failure 400 {string} string "Bad Request"
+// @Router /clients/{id} [get]
+func (h *ClientHandler) GetClientByID(w http.ResponseWriter, r *http.Request) {
+	clientId, err := uuid.Parse(chi.URLParam(r, "id"))
+	if err != nil {
+		http.Error(w, "Invalid client ID", http.StatusBadRequest)
+		return
+	}
+
+	client, err := h.ClientUsecase.GetClientByID(clientId)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(client)
+}
+
+// @Summary Delete an existing client
+// @Description Deletes an existing client by ID
+// @Tags clients
+// @Accept json
+// @Produce json
+// @Param id path string true "Client ID"
+// @Success 200 {string} string "Your data has been received and is being processed."
+// @Failure 400 {string} string "Invalid client ID"
+// @Failure 400 {string} string "Bad Request"
+// @Router /clients/{id} [delete]
 func (h *ClientHandler) DeleteClient(w http.ResponseWriter, r *http.Request) {
 	clientId, err := uuid.Parse(chi.URLParam(r, "id"))
 	if err != nil {
