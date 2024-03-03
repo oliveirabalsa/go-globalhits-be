@@ -24,6 +24,14 @@ func (r *ClientRepository) GetAll() ([]*model.Client, error) {
 	return clients, nil
 }
 
+func (r *ClientRepository) GetByID(clientID uuid.UUID) (*model.Client, error) {
+	var client model.Client
+	if err := r.DB.Where("id = ? and active = true", clientID).First(&client).Error; err != nil {
+		return nil, err
+	}
+	return &client, nil
+}
+
 func (r *ClientRepository) Create(client *model.Client) (*model.Client, error) {
 	if err := r.DB.Create(client).Error; err != nil {
 		return nil, err
@@ -32,10 +40,6 @@ func (r *ClientRepository) Create(client *model.Client) (*model.Client, error) {
 }
 
 func (r *ClientRepository) Update(client *model.Client) (*model.Client, error) {
-	if err := r.ClientExists(client.ID); err != nil {
-		return nil, err
-	}
-
 	if err := r.DB.Model(&client).Updates(client).Error; err != nil {
 		return nil, err
 	}
@@ -45,18 +49,11 @@ func (r *ClientRepository) Update(client *model.Client) (*model.Client, error) {
 }
 
 func (r *ClientRepository) DeleteClient(clientId uuid.UUID) error {
-	if err := r.ClientExists(clientId); err != nil {
+	var client model.Client
+	if err := r.DB.Where("id = ? AND active = ?", clientId, true).First(&client).Error; err != nil {
 		return err
 	}
 	if err := r.DB.Model(&model.Client{}).Where("id = ?", clientId).Update("active", false).Error; err != nil {
-		return err
-	}
-	return nil
-}
-
-func (r *ClientRepository) ClientExists(clientId uuid.UUID) error {
-	var client model.Client
-	if err := r.DB.Where("id = ? AND active = ?", clientId, true).First(&client).Error; err != nil {
 		return err
 	}
 	return nil
