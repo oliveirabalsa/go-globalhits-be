@@ -25,15 +25,17 @@ func NewClientUseCase(clientRepo repository.ClientRepository, queueChannel *amqp
 }
 
 func (uc *ClientUsecase) CreateClient(client *model.Client) (string, error) {
+	client.EncryptSensitiveData()
 	clientData, err := json.Marshal(client)
 	if err != nil {
 		return "", err
-
 	}
+
 	message := &queue.Message{
 		Action: "create_client",
 		Data:   clientData,
 	}
+
 	err = queue.PublishMessage(uc.QueueChannel, uc.QueueName, message)
 	if err != nil {
 		return "", err
@@ -43,10 +45,10 @@ func (uc *ClientUsecase) CreateClient(client *model.Client) (string, error) {
 
 func (uc *ClientUsecase) UpdateClient(clientId uuid.UUID, client *model.Client) (string, error) {
 	client.ID = clientId
+	client.EncryptSensitiveData()
 	clientData, err := json.Marshal(client)
 	if err != nil {
 		return "", err
-
 	}
 
 	message := &queue.Message{
@@ -61,14 +63,29 @@ func (uc *ClientUsecase) UpdateClient(clientId uuid.UUID, client *model.Client) 
 }
 
 func (uc *ClientUsecase) GetClients() ([]*model.Client, error) {
-	return uc.ClientRepo.GetAll()
+	clients, err := uc.ClientRepo.GetAll()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, client := range clients {
+		client.DecryptSensitiveData()
+	}
+
+	return clients, nil
+}
+
+func (uc *ClientUsecase) GetClientByID(clientId uuid.UUID) (*model.Client, error) {
+	client, err := uc.ClientRepo.GetByID(clientId)
+	if err != nil {
+		return nil, err
+	}
+
+	client.DecryptSensitiveData()
+	return client, nil
 }
 
 func (uc *ClientUsecase) DeleteClient(clientId uuid.UUID) (string, error) {
-	if err := uc.ClientRepo.ClientExists(clientId); err != nil {
-		return "", err
-	}
-
 	message := &queue.Message{
 		Action: "delete_client",
 		Data:   []byte(clientId.String()),
