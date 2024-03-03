@@ -39,6 +39,169 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "Creates a new client with the provided data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clients"
+                ],
+                "summary": "Create a new client",
+                "parameters": [
+                    {
+                        "description": "Client object to be created",
+                        "name": "client",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_oliveirabalsa_go-globalhitss-be_app_model.Client"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Your data has been received and is being processed.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/clients/{id}": {
+            "get": {
+                "description": "Get a single client by ID from the database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clients"
+                ],
+                "summary": "Get a client by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Client ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_oliveirabalsa_go-globalhitss-be_app_model.Client"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "404": {
+                        "description": "Client not found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deletes an existing client by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clients"
+                ],
+                "summary": "Delete an existing client",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Client ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Your data has been received and is being processed.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Updates an existing client with the provided data",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "clients"
+                ],
+                "summary": "Update an existing client",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Client ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Client object to be updated",
+                        "name": "client",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_oliveirabalsa_go-globalhitss-be_app_model.Client"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Your data has been received and is being processed.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
             }
         }
     },
@@ -52,28 +215,34 @@ const docTemplate = `{
                 "name"
             ],
             "properties": {
-                "active": {
-                    "type": "boolean"
-                },
                 "address": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Rua x, bairro da rua, cidade/estado"
                 },
                 "contact": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "fulano.dasilva@example.com"
                 },
                 "cpf": {
+                    "type": "string",
+                    "example": "123.456.789-00"
+                },
+                "createdAt": {
                     "type": "string"
                 },
                 "date_of_birth": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "12/12/1912"
                 },
                 "last_name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "da Silva"
                 },
                 "name": {
+                    "type": "string",
+                    "example": "Fulano"
+                },
+                "updatedAt": {
                     "type": "string"
                 }
             }

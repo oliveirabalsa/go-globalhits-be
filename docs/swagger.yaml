@@ -1,21 +1,27 @@
 definitions:
   github_com_oliveirabalsa_go-globalhitss-be_app_model.Client:
     properties:
-      active:
-        type: boolean
       address:
+        example: Rua x, bairro da rua, cidade/estado
         type: string
       contact:
+        example: fulano.dasilva@example.com
         type: string
       cpf:
+        example: 123.456.789-00
+        type: string
+      createdAt:
         type: string
       date_of_birth:
-        type: string
-      id:
+        example: 12/12/1912
         type: string
       last_name:
+        example: da Silva
         type: string
       name:
+        example: Fulano
+        type: string
+      updatedAt:
         type: string
     required:
     - cpf
@@ -41,6 +47,114 @@ paths:
               $ref: '#/definitions/github_com_oliveirabalsa_go-globalhitss-be_app_model.Client'
             type: array
       summary: Get a list of clients
+      tags:
+      - clients
+    post:
+      consumes:
+      - application/json
+      description: Creates a new client with the provided data
+      parameters:
+      - description: Client object to be created
+        in: body
+        name: client
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_oliveirabalsa_go-globalhitss-be_app_model.Client'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Your data has been received and is being processed.
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Create a new client
+      tags:
+      - clients
+  /clients/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes an existing client by ID
+      parameters:
+      - description: Client ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Your data has been received and is being processed.
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Delete an existing client
+      tags:
+      - clients
+    get:
+      consumes:
+      - application/json
+      description: Get a single client by ID from the database
+      parameters:
+      - description: Client ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_oliveirabalsa_go-globalhitss-be_app_model.Client'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Client not found
+          schema:
+            type: string
+      summary: Get a client by ID
+      tags:
+      - clients
+    patch:
+      consumes:
+      - application/json
+      description: Updates an existing client with the provided data
+      parameters:
+      - description: Client ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Client object to be updated
+        in: body
+        name: client
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_oliveirabalsa_go-globalhitss-be_app_model.Client'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Your data has been received and is being processed.
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Update an existing client
       tags:
       - clients
 swagger: "2.0"
