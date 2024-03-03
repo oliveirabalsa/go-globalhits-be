@@ -46,15 +46,22 @@ paths:
       consumes:
       - application/json
       description: Get a list of clients from the database
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of items per page
+        in: query
+        name: page_size
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/github_com_oliveirabalsa_go-globalhitss-be_app_dto.PaginationResponse'
-            type: array
+            $ref: '#/definitions/github_com_oliveirabalsa_go-globalhitss-be_app_dto.PaginationResponse'
       summary: Get a list of clients
       tags:
       - clients

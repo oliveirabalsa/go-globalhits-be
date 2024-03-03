@@ -28,14 +28,25 @@ const docTemplate = `{
                     "clients"
                 ],
                 "summary": "Get a list of clients",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page number",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number of items per page",
+                        "name": "page_size",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/github_com_oliveirabalsa_go-globalhitss-be_app_dto.PaginationResponse"
-                            }
+                            "$ref": "#/definitions/github_com_oliveirabalsa_go-globalhitss-be_app_dto.PaginationResponse"
                         }
                     }
                 }

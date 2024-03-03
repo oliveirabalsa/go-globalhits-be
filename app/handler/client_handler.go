@@ -94,7 +94,9 @@ func (h *ClientHandler) UpdateClient(w http.ResponseWriter, r *http.Request) {
 // @Tags clients
 // @Accept json
 // @Produce json
-// @Success 200 {array} dto.PaginationResponse
+// @Param page query int false "Page number"
+// @Param page_size query int false "Number of items per page"
+// @Success 200 {object} dto.PaginationResponse
 // @Router /api/v1/clients [get]
 func (h *ClientHandler) GetClients(w http.ResponseWriter, r *http.Request) {
 	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
