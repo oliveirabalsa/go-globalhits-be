@@ -7,7 +7,6 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
-	"github.com/oliveirabalsa/go-globalhitss-be/app/dto"
 	"github.com/oliveirabalsa/go-globalhitss-be/app/model"
 	"github.com/oliveirabalsa/go-globalhitss-be/app/usecase"
 )
@@ -102,30 +101,10 @@ func (h *ClientHandler) GetClients(w http.ResponseWriter, r *http.Request) {
 	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
 	pageSize, _ := strconv.Atoi(r.URL.Query().Get("page_size"))
 
-	if page == 0 {
-		page = 1
-	}
-
-	if pageSize == 0 {
-		pageSize = 10
-	}
-
-	clients, totalPages, err := h.ClientUsecase.GetClients(page, pageSize)
+	response, err := h.ClientUsecase.GetClients(page, pageSize)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
-	}
-
-	nextPage := page + 1
-	if nextPage > totalPages {
-		nextPage = 0
-	}
-
-	response := dto.PaginationResponse{
-		Data:       clients,
-		Page:       page,
-		NextPage:   nextPage,
-		TotalPages: totalPages,
 	}
 
 	w.Header().Set("Content-Type", "application/json")

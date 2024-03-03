@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/google/uuid"
+	"github.com/oliveirabalsa/go-globalhitss-be/app/dto"
 	"github.com/oliveirabalsa/go-globalhitss-be/app/model"
 	"github.com/oliveirabalsa/go-globalhitss-be/app/repository"
 	"github.com/oliveirabalsa/go-globalhitss-be/queue"
@@ -63,17 +64,37 @@ func (uc *ClientUsecase) UpdateClient(clientId uuid.UUID, client *model.Client) 
 	return "Your data has been received and is being processed.", nil
 }
 
-func (uc *ClientUsecase) GetClients(page int, pageSize int) ([]*model.Client, int, error) {
+func (uc *ClientUsecase) GetClients(page int, pageSize int) (dto.PaginationResponse, error) {
+	if page == 0 {
+		page = 1
+	}
+
+	if pageSize == 0 {
+		pageSize = 10
+	}
+
 	clients, totalPages, err := uc.ClientRepo.GetAll(page, pageSize)
 	if err != nil {
-		return nil, 0, err
+		return dto.PaginationResponse{}, err
 	}
 
 	for _, client := range clients {
 		client.DecryptSensitiveData()
 	}
 
-	return clients, totalPages, nil
+	nextPage := page + 1
+	if nextPage > totalPages {
+		nextPage = 0
+	}
+
+	response := dto.PaginationResponse{
+		Data:       clients,
+		Page:       page,
+		NextPage:   nextPage,
+		TotalPages: totalPages,
+	}
+
+	return response, nil
 }
 
 func (uc *ClientUsecase) GetClientByID(clientId uuid.UUID) (*model.Client, error) {
