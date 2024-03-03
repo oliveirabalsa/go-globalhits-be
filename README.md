@@ -56,7 +56,6 @@ Acesse o Swagger em `http://localhost:8082/swagger/index.html` testar a API ou v
 
 
 - Filtros de busca
-- Paginação
 - Testes de carga
 
 ---
