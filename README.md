@@ -38,27 +38,27 @@ Isso iniciará os serviços do RabbitMQ e do PostgreSQL em contêineres Docker, 
 3. Execute o script `start.sh` para iniciar o worker, criar a fila e iniciar a aplicação:
 
    ```bash
-   sh ./start.sh
+   go run cmd/bootstrap/bootstrap.go
    ```
 
 ### Testando a Aplicação
 
 Acesse o Swagger em `http://localhost:8082/swagger/index.html` testar a API ou você pode encontrar na pasta postman um json para importação.
 
+Existe um script para fazer um pequeno teste de carga 
+   ```bash
+   go run cmd/scripts/load.go
+   ```
+
 ### Informações Adicionais
 
 - As requisições de criação, atualização e exclusão são encaminhadas através de filas RabbitMQ, enquanto as requisições de obtenção interagem diretamente com o banco de dados.
 - Os dados são criptografados na inserção e descriptografados na seleção do banco de dados para segurança do usuário.
+- As respostas estão sendo paginadas
+- Script para teste de carga
   
 ---
 
-#### Ações que eu faria na aplicação a partir dessa versão:
-
-
-- Filtros de busca
-- Testes de carga
-
----
 
 ### 📝 Licença
 
