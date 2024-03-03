@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"math"
+
 	"github.com/google/uuid"
 	"github.com/oliveirabalsa/go-globalhitss-be/app/model"
 	"gorm.io/gorm"
@@ -16,12 +18,21 @@ func NewClientRepository(db *gorm.DB) *ClientRepository {
 	}
 }
 
-func (r *ClientRepository) GetAll() ([]*model.Client, error) {
+func (r *ClientRepository) GetAll(page int, pageSize int) ([]*model.Client, int, error) {
 	var clients []*model.Client
-	if err := r.DB.Where("active = ?", true).Find(&clients).Error; err != nil {
-		return nil, err
+	var totalRecords int64
+
+	if err := r.DB.Model(&model.Client{}).Where("active = ?", true).Count(&totalRecords).Error; err != nil {
+		return nil, 0, err
 	}
-	return clients, nil
+
+	if err := r.DB.Where("active = ?", true).Offset((page - 1) * pageSize).Limit(pageSize).Find(&clients).Error; err != nil {
+		return nil, 0, err
+	}
+
+	totalPages := int(math.Ceil(float64(totalRecords) / float64(pageSize)))
+
+	return clients, totalPages, nil
 }
 
 func (r *ClientRepository) GetByID(clientID uuid.UUID) (*model.Client, error) {

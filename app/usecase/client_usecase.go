@@ -62,17 +62,17 @@ func (uc *ClientUsecase) UpdateClient(clientId uuid.UUID, client *model.Client) 
 	return "Your data has been received and is being processed.", nil
 }
 
-func (uc *ClientUsecase) GetClients() ([]*model.Client, error) {
-	clients, err := uc.ClientRepo.GetAll()
+func (uc *ClientUsecase) GetClients(page int, pageSize int) ([]*model.Client, int, error) {
+	clients, totalPages, err := uc.ClientRepo.GetAll(page, pageSize)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 
 	for _, client := range clients {
 		client.DecryptSensitiveData()
 	}
 
-	return clients, nil
+	return clients, totalPages, nil
 }
 
 func (uc *ClientUsecase) GetClientByID(clientId uuid.UUID) (*model.Client, error) {

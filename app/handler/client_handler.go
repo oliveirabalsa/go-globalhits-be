@@ -3,9 +3,11 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
+	"github.com/oliveirabalsa/go-globalhitss-be/app/dto"
 	"github.com/oliveirabalsa/go-globalhitss-be/app/model"
 	"github.com/oliveirabalsa/go-globalhitss-be/app/usecase"
 )
@@ -22,7 +24,7 @@ type ClientHandler struct {
 // @Param client body model.Client true "Client object to be created"
 // @Success 200 {string} string "Your data has been received and is being processed."
 // @Failure 400 {string} string "Bad Request"
-// @Router /clients [post]
+// @Router /api/v1/clients [post]
 func (h *ClientHandler) CreateClient(w http.ResponseWriter, r *http.Request) {
 	var client model.Client
 	err := json.NewDecoder(r.Body).Decode(&client)
@@ -58,7 +60,7 @@ func (h *ClientHandler) CreateClient(w http.ResponseWriter, r *http.Request) {
 // @Param client body model.Client true "Client object to be updated"
 // @Success 200 {string} string "Your data has been received and is being processed."
 // @Failure 400 {string} string "Bad Request"
-// @Router /clients/{id} [patch]
+// @Router /api/v1/clients/{id} [patch]
 func (h *ClientHandler) UpdateClient(w http.ResponseWriter, r *http.Request) {
 	var client model.Client
 
@@ -92,17 +94,35 @@ func (h *ClientHandler) UpdateClient(w http.ResponseWriter, r *http.Request) {
 // @Tags clients
 // @Accept json
 // @Produce json
-// @Success 200 {array} model.Client
-// @Router /clients [get]
+// @Success 200 {array} dto.PaginationResponse
+// @Router /api/v1/clients [get]
 func (h *ClientHandler) GetClients(w http.ResponseWriter, r *http.Request) {
-	clients, err := h.ClientUsecase.GetClients()
+	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
+	pageSize, _ := strconv.Atoi(r.URL.Query().Get("page_size"))
+
+	if page == 0 {
+		page = 1
+	}
+
+	if pageSize == 0 {
+		pageSize = 10
+	}
+
+	clients, totalPages, err := h.ClientUsecase.GetClients(page, pageSize)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
+	response := dto.PaginationResponse{
+		Data:       clients,
+		Page:       page,
+		NextPage:   page + 1,
+		TotalPages: totalPages,
+	}
+
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(clients)
+	json.NewEncoder(w).Encode(response)
 }
 
 // @Summary Get a client by ID
@@ -114,7 +134,7 @@ func (h *ClientHandler) GetClients(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} model.Client
 // @Failure 404 {string} string "Client not found"
 // @Failure 400 {string} string "Bad Request"
-// @Router /clients/{id} [get]
+// @Router /api/v1/clients/{id} [get]
 func (h *ClientHandler) GetClientByID(w http.ResponseWriter, r *http.Request) {
 	clientId, err := uuid.Parse(chi.URLParam(r, "id"))
 	if err != nil {
@@ -141,7 +161,7 @@ func (h *ClientHandler) GetClientByID(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {string} string "Your data has been received and is being processed."
 // @Failure 400 {string} string "Invalid client ID"
 // @Failure 400 {string} string "Bad Request"
-// @Router /clients/{id} [delete]
+// @Router /api/v1/clients/{id} [delete]
 func (h *ClientHandler) DeleteClient(w http.ResponseWriter, r *http.Request) {
 	clientId, err := uuid.Parse(chi.URLParam(r, "id"))
 	if err != nil {
