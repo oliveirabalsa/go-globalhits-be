@@ -18,20 +18,26 @@ Certifique-se de ter o Go versão 1.21.6 ou maior instalado em sua máquina
 2. Renomeie ou copie o arquivo `env.example` para `.env` e preencha as variáveis de ambiente necessárias:
 
    ```plaintext
-   PORT=8082 
-   
+   PORT=8082
+
    POSTGRES_HOST=localhost
    POSTGRES_PORT=5432
    POSTGRES_USER=globalhitss
    POSTGRES_PASSWORD=globalhitss
    POSTGRES_DB=globalhitss
 
+
    RABBITMQ_USER=globalhitss
    RABBITMQ_PASSWORD=globalhitss
    RABBITMQ_HOST=localhost
-   RABBITMQ_PORT=5672
-   RABBITMQ_API_PORT=15672
+   RABBITMQ_PORT="5672"
+   RABBITMQ_API_PORT="15672"
    RABBITMQ_QUEUE=globalhitss
+
+   CLIENT_CLIENT_ACTION=create_client
+   DELETE_CLIENT_ACTION=delete_client
+   UPDATE_CLIENT_ACTION=update_client
+
    ```
 3. Execute o serviço docker:   
    
