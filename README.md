@@ -1,8 +1,8 @@
-## Back-End Go Globalhitss
+## Back-End Go RabbitMQ
 
 ### ℹ️ Sobre
 
-Este é o back-end do challenge da GlobalHitss, desenvolvida em Go, utilizando o framework Chi para roteamento, Swagger para documentação da API, RabbitMQ para mensageria, e Gorm como ORM para PostgreSQL.
+Este é o back-end Go RabbitMQ, desenvolvida em Go, utilizando o framework Chi para roteamento, Swagger para documentação da API, RabbitMQ para mensageria, e Gorm como ORM para PostgreSQL.
 
 ### 🚀 Como Iniciar
 
@@ -22,17 +22,17 @@ Certifique-se de ter o Go versão 1.21.6 ou maior instalado em sua máquina
 
    POSTGRES_HOST=localhost
    POSTGRES_PORT=5432
-   POSTGRES_USER=globalhitss
-   POSTGRES_PASSWORD=globalhitss
-   POSTGRES_DB=globalhitss
+   POSTGRES_USER=gorabbit
+   POSTGRES_PASSWORD=gorabbit
+   POSTGRES_DB=gorabbit
 
 
-   RABBITMQ_USER=globalhitss
-   RABBITMQ_PASSWORD=globalhitss
+   RABBITMQ_USER=gorabbit
+   RABBITMQ_PASSWORD=gorabbit
    RABBITMQ_HOST=localhost
    RABBITMQ_PORT="5672"
    RABBITMQ_API_PORT="15672"
-   RABBITMQ_QUEUE=globalhitss
+   RABBITMQ_QUEUE=gorabbit
 
    CLIENT_CLIENT_ACTION=create_client
    DELETE_CLIENT_ACTION=delete_client
